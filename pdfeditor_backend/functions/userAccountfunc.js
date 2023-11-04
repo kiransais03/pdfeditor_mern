@@ -1,21 +1,24 @@
 const bcrypt = require('bcrypt');
 const joi = require('joi');
+const jsonwebtoken = require('jsonwebtoken');
 const Userschema = require('../models/Userschema');
 const {addUsertoDB,getUserdata,findUseralreadyexists} = require('./userDbfunctions');
 
-
-const BCRYPT_SALTS = Number(process.env.BCRYPT_SALTS);  //No of passes the password should go through in bcrypt algorithm
+//No of passes the password should go through in bcrypt algorithm
+const BCRYPT_SALTS = Number(process.env.BCRYPT_SALTS);  
 
 
 //Singup user account
 const usersingnup =async (req,res)=>{
 
+    console.log(req.body.email);
+
     //To check if the input form is in correct format
     const isValid = joi.object({
         name: joi.string().required(),
-        email : joi.email().required(),
+        email : joi.string().email().required(),
         password : joi.string().min(8).required(),
-        repeatpassword : joi.ref(password) 
+        repeatpassword : joi.ref('password'), 
     }).validate(req.body);
 
     if(isValid.error)
@@ -23,6 +26,7 @@ const usersingnup =async (req,res)=>{
         res.status(400).send({
             status : 400,
             message : "Please fill in correct format",
+            errormsg : isValid.error,
         })
     }
 
@@ -35,6 +39,14 @@ const usersingnup =async (req,res)=>{
             status :400,
             message : "User account with this email already exists",
         })
+    }
+    else if(verifyAlreadyexists ==="ERROR")
+    {
+        res.status(400).send({
+        status : 400,
+        message : "Error at Verifying Useraccount",
+        errormsg : error,
+    })
     }
 
 
@@ -56,7 +68,7 @@ const usersingnup =async (req,res)=>{
         message : "User account created successfully",
     })
    }
-   else if(addUser === "FALSE")
+   else if(addUser === "ERROR")
    {
     res.status(400).send({
         status : 400,
@@ -69,9 +81,69 @@ const usersingnup =async (req,res)=>{
 
 //Login User 
 const userlogin = async (req,res)=>{
-   
-}
+   const {email,password} = req.body;
 
+   const isEmail = joi.object({
+      email : joi.string().email(),
+   }).validate(email);
+
+   if(!isEmail)
+   {
+    res.status(400).send({
+        status : 400,
+        message : "Please check email format",
+    })
+   }
+
+   const userData = await getUserdata(email);
+
+   if(userData.error)
+   {
+    res.status(400).send({
+        status : 400,
+        message : "DB error :Getting userdata failed ",
+        errormsg : userData.error,
+    })
+   }
+   else if(!userData.data)
+   {
+    res.status(404).send({
+        status : 404,
+        message : "Useraccount with this emailId not exists.Please signup",
+        error : userData,
+    })
+    return ;
+   }
+
+   //Checking for the password match
+   const isPassword = bcrypt.compare(password,userData.data.password);
+
+   if(!isPassword)
+   {
+    res.status(401).send({
+        status : 401,
+        message : "Please enter correct password",
+    })
+   }
+
+   //To store object as Base64 format in JWT token used for auth validation
+   const payload = {
+    name : userData.data.name,
+    email : userData.data.email,
+   }
+
+   //Creating jwt token to authrize the user as LoggedIn
+   const token =await jsonwebtoken.sign(payload,process.env.JWT_SECRETKEY);
+
+   res.status(200).send({
+    status : 200,
+    message : "User Loging Successfull",
+    data : {
+        token : token,
+    }
+   })
+
+}
 
 
 module.exports = {usersingnup,userlogin}

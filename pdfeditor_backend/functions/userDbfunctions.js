@@ -1,5 +1,6 @@
-const {TRUE,FALSE,ERR,NOT_EXIST} = require('../constants');
+const {TRUE,FALSE,ERROR,NOT_EXIST} = require('../constants');
 const Userschema = require('../models/Userschema');
+const fs = require('fs')
 
 //Saving userObject to database
 const addUsertoDB = async (userObj)=>{
@@ -8,7 +9,7 @@ const addUsertoDB = async (userObj)=>{
      return TRUE;
    }
    catch(error) {
-    return ERR;
+    return ERROR;
    }
 }
 
@@ -20,7 +21,10 @@ const getUserdata = async (email)=>{
     }
 
     try {
-        userData.data = await Userschema.findOne({email:email});
+        userData.data = await Userschema.findOne({"email":email});
+
+        console.log(userData);
+
         return userData;
     }
     catch(error) {
@@ -31,23 +35,87 @@ const getUserdata = async (email)=>{
 
 //To check if user already exists
 const findUseralreadyexists = async (email)=>{
+    const userData = {
+        data : null,
+        error : null,
+    }
+
     try {
    const verifyAccount = getUserdata(email);
 
    if(verifyAccount.data.length !== 0) {
       return TRUE;
    }
+   else if(verifyAccount.error)
+   {
+    return verifyAccount;
+   }
    else {
     return FALSE;
    }
 }
 catch (error) {
-    res.status(400).send({
-        status : 400,
-        message : "Error at Verify Useraccount",
-        errormsg : error,
-    })
+   userData.error = error;
+   return userData;
  }
 }
 
-module.exports = {addUsertoDB,getUserdata,findUseralreadyexists};
+//Add pdflocation to Db of particular user
+const addPdflocation = async (pdflocationstring,email)=>{
+   
+    try {
+        const isaddedPdflocation = await Userschema.findOneAndUpdate({email :email},{pdflocation : pdflocationstring,});
+        
+        if(isaddedPdflocation) {
+        return TRUE;
+        }
+        else {
+            return FALSE;
+        }
+    }
+    catch (error) {
+        return ERROR;
+    }
+}
+
+
+//Get pdflocation from DB
+const getPdflocation = async (email)=>{
+    try {
+          const userObj = await Userschema.findOne({email : email});
+ 
+          if(!userObj)
+          {
+            return NOT_EXIST;
+          }
+
+          const pdflocation = userObj.pdflocation;
+
+          return pdflocation;
+    }
+    catch(error) {
+        return ERROR;
+    }
+}
+
+
+//Update or Replace the original pdf with new pdf
+const replaceOldpdf = async (email,newFilepath)=>{
+    try {
+         const userObj = await Userschema.findOne({email:email});
+
+         if(!userObj)
+         {
+            return ERROR;
+         }
+
+         fs.copyFileSync(newFilepath,userObj.pdflocation)
+         return TRUE;
+    }
+    catch(error)
+    {
+        return ERROR;
+    }
+}
+
+module.exports = {addUsertoDB,getUserdata,findUseralreadyexists,addPdflocation,getPdflocation,replaceOldpdf};
