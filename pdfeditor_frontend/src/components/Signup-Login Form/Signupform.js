@@ -40,9 +40,16 @@ function Signupform () {
               
     }
     catch(error){
+    console.log("Some Error Occured :",error)
+      if(!error.response)
+      {
+      toast.error(`Error:${error.message}`);
+      }
+    else {
         toast.error(`Some error occured ${error.message}`);
         console.log("Some Error Occured23 :",error.message);
         setLoading(false);
+    }
     }
 }
 else {

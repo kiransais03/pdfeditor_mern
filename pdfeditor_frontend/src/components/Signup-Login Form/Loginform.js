@@ -34,9 +34,16 @@ const Loginform =()=>{
         }
         catch(error){
             setLoading(false);
+            console.log("Some Error Occured :",error)
+            if(!error.response)
+             {
+                  toast.error(`Error:${error.message}`);
+            }
+            else {
             toast.error(`Error:${error.response.data.message}`);
             setPassword("")
             console.log("Some Error Occured :",error.response.data.message)
+            }
         }
     }
     else {

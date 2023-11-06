@@ -28,6 +28,8 @@ const usersingnup =async (req,res)=>{
             message : "Please fill in correct format",
             errormsg : isValid.error,
         })
+
+        return ;
     }
 
     //To check if the user already exists with this emailId
@@ -39,6 +41,8 @@ const usersingnup =async (req,res)=>{
             status :400,
             message : "User account with this email already exists",
         })
+
+        return ;
     }
     else if(verifyAlreadyexists ==="ERROR")
     {
@@ -47,6 +51,8 @@ const usersingnup =async (req,res)=>{
         message : "Error at Verifying Useraccount",
         errormsg : error,
     })
+
+    return ;
     }
 
 
@@ -67,6 +73,8 @@ const usersingnup =async (req,res)=>{
         status : 201,
         message : "User account created successfully",
     })
+
+    return ;
    }
    else if(addUser === "ERROR")
    {
@@ -74,6 +82,8 @@ const usersingnup =async (req,res)=>{
         status : 400,
         message : "DB error:User account creation failed",
     })
+
+    return ;
    }
 }
 
@@ -93,6 +103,8 @@ const userlogin = async (req,res)=>{
         status : 400,
         message : "Please check email format",
     })
+
+    return ;
    }
 
    const userData = await getUserdata(email);
@@ -104,6 +116,8 @@ const userlogin = async (req,res)=>{
         message : "DB error :Getting userdata failed ",
         errormsg : userData.error,
     })
+
+    return ;
    }
    else if(!userData.data)
    {
@@ -116,7 +130,7 @@ const userlogin = async (req,res)=>{
    }
 
    //Checking for the password match
-   const isPassword = bcrypt.compare(password,userData.data.password);
+   const isPassword =await bcrypt.compare(password,userData.data.password);
 
    if(!isPassword)
    {
@@ -124,6 +138,8 @@ const userlogin = async (req,res)=>{
         status : 401,
         message : "Please enter correct password",
     })
+
+    return ;
    }
 
    //To store object as Base64 format in JWT token used for auth validation
