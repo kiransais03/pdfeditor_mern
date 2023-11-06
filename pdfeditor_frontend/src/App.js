@@ -8,6 +8,7 @@ import Signuppage from "./pages/Signuppage/Signuppage";
 import Uploadpdfpage from './pages/Uploadpdfpage/Uploadpdfpage';
 import Pdfeditpage from "./pages/Pdfeditpage/Pdfeditpage"
 import Test from './components/Loader/Loader';
+import Homepage from './pages/Homepage/Homepage';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/pdfupload" element={<Uploadpdfpage/>}/>
         <Route path="/pdfedit" element={<Pdfeditpage/>}/>
         <Route path="*" element={<Loginpage/>}/>
+        <Route path="/" element={<Homepage/>}/>
        </Routes>
     </>
   );

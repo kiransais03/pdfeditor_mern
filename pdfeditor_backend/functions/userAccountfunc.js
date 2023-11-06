@@ -44,16 +44,15 @@ const usersingnup =async (req,res)=>{
 
         return ;
     }
-    else if(verifyAlreadyexists ==="ERROR")
-    {
-        res.status(400).send({
-        status : 400,
-        message : "Error at Verifying Useraccount",
-        errormsg : error,
-    })
+    // else if(verifyAlreadyexists ==="ERROR")
+    // {
+    //     res.status(400).send({
+    //     status : 400,
+    //     message : "Error at Verifying Useraccount",
+    // })
 
-    return ;
-    }
+    // return ;
+    // }
 
 
     //creating an object to save deatils of user to MongoDb

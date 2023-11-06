@@ -89,7 +89,11 @@ app.post('/exportpdf',isAuth,async (req,res)=>{
   const newpdfDoc = await PDFDocument.create();  //created a new pdf
 
   const pagenosstring = req.body.pagenosstring;
-  const pagenoarr = pagenosstring.split(',');
+  console.log(pagenosstring,"string")
+  let newstring = pagenosstring.slice(0,pagenosstring.length-1);
+  const pagenoarr = newstring.split(',');
+
+  console.log(pagenoarr,"array")
 
   const pdflocation = await getPdflocation(req.locals.email);
 

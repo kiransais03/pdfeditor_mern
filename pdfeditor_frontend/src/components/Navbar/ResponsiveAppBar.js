@@ -36,7 +36,7 @@ function ResponsiveAppBar() {
   console.log(location.pathname)
 
   useEffect(()=>{
-    if(location.pathname==='login' || location.pathname==="signup" || location.pathname==="/")
+    if(location.pathname==='login' || location.pathname==="signup")
     {
       setHide(true);
     }

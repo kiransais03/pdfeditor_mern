@@ -110,11 +110,20 @@ async function exportpdf() {
   try {
     setLoading(true);
     let tempstring = pagenostring.slice(pagenostring.length-1)
-    let bodyObj = {"pagenosstring":tempstring};
+    let bodyObj = {"pagenosstring":pagenostring};
     console.log("new string",tempstring,pagenostring)
-  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{'Content-Type': 'application/pdf',"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
+  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
 
   console.log(exportpdf.data)
+
+  const blob = new Blob([exportpdf.data], { type: 'application/pdf' });
+
+  const url = window.URL.createObjectURL(blob);
+
+  const atag = document.createElement('a');
+  atag.href=url;
+  atag.click();
+
     setLoading(false);
   toast.success('Download started');
   }
