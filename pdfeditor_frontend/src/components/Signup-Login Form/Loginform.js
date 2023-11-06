@@ -29,7 +29,7 @@ const Loginform =()=>{
               setLoading(false);
               toast.success('Login Successful');
               console.log("Login Successfull.")
-             navigate1("/")
+             navigate1("/pdfupload")
               
         }
         catch(error){

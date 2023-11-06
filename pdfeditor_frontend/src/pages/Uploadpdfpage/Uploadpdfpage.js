@@ -41,7 +41,7 @@ function Uploadpdfpage() {
            console.log("Document Uploading Completed.")
            localStorage.setItem('currPdf',pdffile[0].name)
            setisDisabled(true);
-           navigate('/pdfedit/:1')
+           navigate('/pdfedit')
    }
    catch(error) {
     setLoading(false);
@@ -60,7 +60,7 @@ function Uploadpdfpage() {
     if(!localStorage.getItem('token'))
     {
       toast.info("Please Login to go to PDF Editor")
-      navigate('/user/login')
+      navigate('/login')
     }
   },[])
 
@@ -70,6 +70,10 @@ function Uploadpdfpage() {
 
     <div className='uploadpdfpagecontents'>
     <ResponsiveAppBar/>
+    <div style={{fontFamily:"fantasy","backgroundColor":"green","textAlign":"center","width":"100%"}}>
+    <h1>Format Pdf For Free</h1>
+    <h2>Users trust to manage documents on pdfeditor platform</h2>
+    </div>
       <Fileinput text="Click To Select PDF File"  accept="application/pdf" id="banner-img" filehandlingfunc={pdffileupload}/>
      {localStorage.getItem('currPdf') && <span className='colchange' style={{fontSize:"15px",display:"flex",justifyContent:"center",alignItems:"center"}}>Current Loaded File:{localStorage.getItem('currPdf')}</span> }
 <div>

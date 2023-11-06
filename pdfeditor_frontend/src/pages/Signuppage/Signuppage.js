@@ -48,7 +48,7 @@ function Signuppage () {
         <div className="input-wrapper-form">
             <h1>Signup</h1>
             <Signupform/>
-            <p className="signup-page-redirect" onClick={()=>{navigate("/user/login")}}>Already have an Account?Click here to <span>LogIn.</span></p>
+            <p className="signup-page-redirect" onClick={()=>{navigate("/login")}}>Already have an Account?Click here to <span>LogIn.</span></p>
         </div>
         </>
     )

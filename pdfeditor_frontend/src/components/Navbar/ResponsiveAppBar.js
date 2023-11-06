@@ -18,7 +18,7 @@ import { toast } from 'react-toastify';
 import {useState,useEffect} from "react";
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-const pages = ['Signup','Login','Chat'];
+const pages = ['Signup','Login','PdfUpload','PdfEdit'];
 const settings = ['Logout'];
 
 function ResponsiveAppBar() {
@@ -36,7 +36,7 @@ function ResponsiveAppBar() {
   console.log(location.pathname)
 
   useEffect(()=>{
-    if(location.pathname==='/user/login' || location.pathname==="/user/signup" || location.pathname==="/")
+    if(location.pathname==='login' || location.pathname==="signup" || location.pathname==="/")
     {
       setHide(true);
     }
@@ -58,7 +58,7 @@ function ResponsiveAppBar() {
   const handleCloseNavMenu = (page) => {
     setAnchorElNav(page);
     setRerender("2");
-    navigate('/user/'+page.toLowerCase())
+    navigate('/'+page.toLowerCase())
   };
 
   const handleCloseUserMenu = () => {
@@ -69,7 +69,7 @@ function ResponsiveAppBar() {
     localStorage.removeItem('token');
     localStorage.removeItem('currPdf')
     setRerender("1")
-    navigate('/user/login');
+    navigate('login');
   }
 
   return (

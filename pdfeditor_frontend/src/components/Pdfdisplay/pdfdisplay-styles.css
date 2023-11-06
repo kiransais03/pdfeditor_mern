@@ -1,0 +1,15 @@
+.react-pdf__Page {
+    border: 2px solid brown !important;
+}
+
+.react-pdf__Document {
+  gap: 10px;
+}
+
+.pdfpagedisp:hover {
+  cursor: pointer;
+}
+
+.green {
+  background-color: blueviolet !important;
+}

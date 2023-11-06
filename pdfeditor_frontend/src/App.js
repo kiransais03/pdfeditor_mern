@@ -7,6 +7,7 @@ import Loginpage from "./pages/Loginpage/Loginpage";
 import Signuppage from "./pages/Signuppage/Signuppage";
 import Uploadpdfpage from './pages/Uploadpdfpage/Uploadpdfpage';
 import Pdfeditpage from "./pages/Pdfeditpage/Pdfeditpage"
+import Test from './components/Loader/Loader';
 
 
 function App() {
@@ -14,10 +15,11 @@ function App() {
     <>
       <ToastContainer/>
        <Routes>
-        <Route path="/user/login" element={<Loginpage/>}/>
-        <Route path="/user/signup" element={<Signuppage/>}/>
+        <Route path="/login" element={<Loginpage/>}/>
+        <Route path="/signup" element={<Signuppage/>}/>
         <Route path="/pdfupload" element={<Uploadpdfpage/>}/>
-        <Route path="/pdfedit/:number" element={<Pdfeditpage/>}/>
+        <Route path="/pdfedit" element={<Pdfeditpage/>}/>
+        <Route path="*" element={<Loginpage/>}/>
        </Routes>
     </>
   );
