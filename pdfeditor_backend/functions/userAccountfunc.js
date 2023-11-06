@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const joi = require('joi');
 const jsonwebtoken = require('jsonwebtoken');
 const Userschema = require('../models/Userschema');
+const {TRUE,FALSE,ERROR,NOT_EXIST} = require('../constants');
 const {addUsertoDB,getUserdata,findUseralreadyexists} = require('./userDbfunctions');
 
 //No of passes the password should go through in bcrypt algorithm
@@ -33,8 +34,7 @@ const usersingnup =async (req,res)=>{
     }
 
     //To check if the user already exists with this emailId
-    const verifyAlreadyexists = findUseralreadyexists(req.body.email);
-
+    const verifyAlreadyexists =await findUseralreadyexists(req.body.email);
     if(verifyAlreadyexists === "TRUE")
     {
         res.status(400).send({

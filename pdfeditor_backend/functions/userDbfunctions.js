@@ -23,7 +23,7 @@ const getUserdata = async (email)=>{
     try {
         userData.data = await Userschema.findOne({"email":email});
 
-        console.log(userData);
+        console.log(userData,"this is userObj from DB");
 
         return userData;
     }
@@ -41,22 +41,25 @@ const findUseralreadyexists = async (email)=>{
     }
 
     try {
-   const verifyAccount = getUserdata(email);
+   const verifyAccount =await getUserdata(email);
 
-   if(verifyAccount.data.length !== 0) {
-      return TRUE;
+   console.log("Verification obj",verifyAccount)
+
+   if(verifyAccount.data.email) {
+      return "TRUE";
    }
    else if(verifyAccount.error)
    {
-    return verifyAccount;
+    return "TRUE";
    }
    else {
+    console.log("false")
     return FALSE;
    }
 }
 catch (error) {
    userData.error = error;
-   return userData;
+   return "ERROR";
  }
 }
 
