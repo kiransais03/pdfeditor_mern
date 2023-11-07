@@ -70,5 +70,5 @@
 
 ### Attached The Postman API Documentations : Refer Github Repository
 
-### Video Recording & Screenshots Of Website Overview : Googledrive Link :
+### Video Recording & Screenshots Of Website Overview : Googledrive Link : https://drive.google.com/drive/folders/1IsbiAkapM9ns8OUfwXpm8PB3kEPMVOi4?usp=sharing
 
