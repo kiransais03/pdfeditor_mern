@@ -26,6 +26,8 @@
 
 --After logging in,user can upload the pdf and select the required pages he wanted to export to a new pdf,then after he can export and download the new pdf 
 
+--For displaying pdf "react-pdf" package has been used.
+
 --A notification pop up asks Do you want to replace,the old pdf with new one.
 
 --Frontend app has been deployed in Vercel Hositng Website.
