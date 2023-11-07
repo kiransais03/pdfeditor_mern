@@ -20,6 +20,8 @@ function Pdfdisplay () {
 
     let navigate = useNavigate();
 
+    let pagesstringref = useRef("");
+
     if(!localStorage.getItem('currPdf'))
     {
       navigate('/login')
@@ -86,14 +88,16 @@ function addPageno(e) {
 const makepagestring = (pageno)=>{
   if(pagenostring.includes(pageno))
   {
-    let tempstr = pagenostring.replace(pageno+",","");
-    setPagenostring(tempstr);
+    let tempstr1 = pagenostring.replace(pageno+",","");
+    setPagenostring(tempstr1);
+    pagesstringref.current=tempstr1
     console.log("remove",pagenostring);
 
   }
   else {
-    let tempstr = pagenostring+pageno+","
-    setPagenostring(tempstr);
+    let tempstr2 = pagenostring+pageno+","
+    setPagenostring(tempstr2);
+    pagesstringref.current = tempstr2;
     console.log("add",pagenostring)
   }
 }
@@ -109,10 +113,11 @@ let [loading,setLoading] = useState(false);
 async function exportpdf() {
   try {
     setLoading(true);
-    let tempstring = pagenostring.slice(pagenostring.length-1)
-    let bodyObj = {"pagenosstring":pagenostring};
-    console.log("new string",tempstring,pagenostring)
-  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
+
+    let bodyObj = {"pagenosstring":pagesstringref.current};
+
+    console.log("new string",pagesstringref.current)
+  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{ 'Content-Type': 'application/pdf',"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
 
   console.log(exportpdf.data)
 
@@ -122,6 +127,11 @@ async function exportpdf() {
 
   const atag = document.createElement('a');
   atag.href=url;
+  atag.setAttribute(
+    'download',
+    `pdfeditordoc.pdf`,
+  );
+  document.body.appendChild(atag);
   atag.click();
 
     setLoading(false);
