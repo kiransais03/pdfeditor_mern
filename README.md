@@ -72,3 +72,5 @@
 
 ### Video Recording & Screenshots Of Website Overview : Googledrive Link : https://drive.google.com/drive/folders/1IsbiAkapM9ns8OUfwXpm8PB3kEPMVOi4?usp=sharing
 
+-- I got a small error while exporting pages to pdf, remaining all the code is correct.Plz consider.
+Thank You 
