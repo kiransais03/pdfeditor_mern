@@ -10,7 +10,7 @@ import Loader from "../Loader/Loader"
 import { useNavigate } from "react-router-dom";
 
 pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-  'pdfjs-dist/build/pdf.worker.min.js',
+  'pdfjs-dist/legacy/build/pdf.worker.min.js',
   import.meta.url,
 ).toString();
 
