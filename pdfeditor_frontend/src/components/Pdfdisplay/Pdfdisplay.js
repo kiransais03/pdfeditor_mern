@@ -153,7 +153,7 @@ async function exportpdf() {
 
     return (<>
     <div className="d-flex justify-content-center" style={{margin:"10px"}}>
-     <button type="button" class="btn btn-primary btn-lg" onClick={exportpdf}>{loading? <div><div className="spinner-border spinner-border-sm" role="status">
+     <button type="button" className="btn btn-primary btn-lg" onClick={exportpdf}>{loading? <div><div className="spinner-border spinner-border-sm" role="status">
   <span className="visually-hidden">Loading...</span>
 </div>
 <div className="spinner-grow spinner-grow-sm" role="status">
@@ -170,14 +170,14 @@ async function exportpdf() {
       >
         {Array.from(
           new Array(numPages),
-          (el, index) => (<div className="pdfpagedisp" >
+          (el, index) => (<div key={`key_${index+1}`} className="pdfpagedisp" >
             <Page
               key={`page_${index + 1}`}
               pageNumber={index + 1}
               height={400}
               renderAnnotationLayer={true}
             />
-            <button type="button" class="btn active" aria-pressed="true" style={{textAlign:"center","width":"100%","backgroundColor":"grey"}} onClick={addPageno} id={index}>{index+1}</button>
+            <button type="button" className="btn active" aria-pressed="true" style={{textAlign:"center","width":"100%","backgroundColor":"grey"}} onClick={addPageno} id={index}>{index+1}</button>
             </div>
           ),
         )}

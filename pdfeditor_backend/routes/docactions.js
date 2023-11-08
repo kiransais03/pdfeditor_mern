@@ -82,7 +82,6 @@ catch(error) {
 })
 
 
-
 //Export the selected pages into pdf and download using 'pdf-lib' npm package
 app.post('/exportpdf',isAuth,async (req,res)=>{
 
