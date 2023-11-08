@@ -85,6 +85,8 @@ catch(error) {
 //Export the selected pages into pdf and download using 'pdf-lib' npm package
 app.post('/exportpdf',isAuth,async (req,res)=>{
 
+    try {
+
   const newpdfDoc = await PDFDocument.create();  //created a new pdf
 
   const pagenosstring = req.body.pagenosstring;
@@ -118,6 +120,15 @@ app.post('/exportpdf',isAuth,async (req,res)=>{
     let temppath = path.resolve(__dirname,'temppdfstorage','tempdoc.pdf')   //written to convert the 'Relative' path to 'Absolute path'
 
     fs.copyFileSync('./routes/temppdfstorage/newPdffile.pdf',temppath);
+
+}
+catch(error) {
+    res.status(400).send({
+        status:400,
+        message : "Some error occured while file processing",
+        errormsg : error,
+    })
+}
 
     res.status(200).sendFile(temppath,(error)=>{
 

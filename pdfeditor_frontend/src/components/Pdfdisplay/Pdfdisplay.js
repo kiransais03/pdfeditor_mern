@@ -119,11 +119,16 @@ async function exportpdf() {
     let bodyObj = {"pagenosstring":pagesstringref.current};
 
     console.log("new string",pagesstringref.current)
-  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{ 'Content-Type': 'application/pdf',"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
 
-  console.log(exportpdf.data)
+  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{ "token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
 
-  const blob = new Blob([exportpdf.data], { type: 'application/pdf' });
+  console.log(exportpdf)
+
+  let data1 = exportpdf.data;
+
+  const arrayBuffer = data1.arrayBuffer();
+
+  const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
 
   const url = window.URL.createObjectURL(blob);
 
