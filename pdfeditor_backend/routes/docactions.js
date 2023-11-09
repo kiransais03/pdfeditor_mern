@@ -93,8 +93,8 @@ app.post('/exportpdf',isAuth,async (req,res)=>{
 
   console.log(pagenosstring,"string")
   
-  let newstring = pagenosstring.slice(0,pagenosstring.length-1);
-  const pagenoarr = newstring.split(',');
+  let newstring =await pagenosstring.slice(0,pagenosstring.length-1);
+  const pagenoarr =await newstring.split(',');
 
   console.log(pagenoarr,"array")
 
@@ -117,18 +117,9 @@ app.post('/exportpdf',isAuth,async (req,res)=>{
     res.set("Content-Type","application/pdf");
 
     //Note : create 'temppdfstorage' folder in the parent folder of current code file(here docactions.js) that is inside 'routes' folder
-    let temppath = path.resolve(__dirname,'temppdfstorage','tempdoc.pdf')   //written to convert the 'Relative' path to 'Absolute path'
+    let temppath =await path.resolve(__dirname,'temppdfstorage','tempdoc.pdf')   //written to convert the 'Relative' path to 'Absolute path'
 
     fs.copyFileSync('./routes/temppdfstorage/newPdffile.pdf',temppath);
-
-}
-catch(error) {
-    res.status(400).send({
-        status:400,
-        message : "Some error occured while file processing",
-        errormsg : error,
-    })
-}
 
     res.status(200).sendFile(temppath,(error)=>{
 
@@ -142,6 +133,16 @@ catch(error) {
             })
         }
     })
+
+}
+catch(error) {
+    res.status(400).send({
+        status:400,
+        message : "Some error occured while file processing",
+        errormsg : error,
+    })
+}
+   
 })
 
 

@@ -6,11 +6,11 @@ const mongoose = require('mongoose'); //import ODM mongoose library for MongoDB
 const docactions = require('./routes/docactions');
 const useractions = require('./routes/useractions');
 
+app.use(cors({origin:'*'})); //Make the server accessible throught all the domains
 
 app.use(express.json());  //Middleware to conver the http data format to JSON from API
 app.use(express.urlencoded({ extended: true }));
 
-app.use(cors({origin:'*'})); //Make the server accessible throught all the domains
 
 
 app.use('/actions',docactions);

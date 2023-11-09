@@ -126,9 +126,9 @@ async function exportpdf() {
 
   let data1 = exportpdf.data;
 
-  const arrayBuffer = data1.arrayBuffer();
+  const arrayBuffer1 = data1.arrayBuffer();
 
-  const blob = new Blob([arrayBuffer], { type: 'application/pdf' });
+  const blob = new Blob([arrayBuffer1], { type: 'application/pdf' });
 
   const url = window.URL.createObjectURL(blob);
 
