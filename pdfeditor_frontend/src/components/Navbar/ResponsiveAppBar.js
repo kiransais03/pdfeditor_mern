@@ -162,7 +162,7 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
-          <span>User : {localStorage.getItem('email')} </span>
+         {localStorage.getItem('email') && <span>User : {localStorage.getItem('email')} </span>} 
           <Box style={hide?{display:"none",flexGrow: "0"}:{display:"block",flexGrow: "0"}}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
