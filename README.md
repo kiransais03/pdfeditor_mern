@@ -72,5 +72,5 @@
 
 ### Video Recording & Screenshots Of Website Overview : Googledrive Link : https://drive.google.com/drive/folders/1IsbiAkapM9ns8OUfwXpm8PB3kEPMVOi4?usp=sharing
 
--- I got a small error while exporting pages to pdf, remaining all the code is correct.Plz consider.
+-- I got a small error while exporting pages to pdf, remaining all the code is correct.--(That error has been rectified and uploaded the new video as well to Google Drive.That error caused due to node version support problem by "pdf-lib" library.)
 Thank You 
