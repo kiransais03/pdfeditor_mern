@@ -9,10 +9,6 @@ import "./pdfdisplay-styles.css"
 import Loader from "../Loader/Loader"
 import { useNavigate } from "react-router-dom";
 
-// pdfjs.GlobalWorkerOptions.workerSrc = new URL(
-//   'pdfjs-dist/legacy/build/pdf.worker.min.js',
-//   import.meta.url,
-// ).toString();
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -48,17 +44,20 @@ useEffect(()=>{
     const getpdffile = async ()=>{
             console.log("Getting pdf file")
             try {
-        let pdf = await axios.get(`${process.env.REACT_APP_URL}/actions/getpdf`,{headers:{"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`,"Content-Type":"application/pdf"},  responseType: 'arraybuffer' })
+        let pdf = await axios.get(`${process.env.REACT_APP_URL}/actions/getpdf`,{headers:{"token-pdfeditor":`Bearer ${localStorage.getItem('token')}`,"Content-Type":"application/pdf"},responseType: 'arraybuffer'})
         
+        console.log("after getting api",pdf)
         console.log(pdf.data,"pdf file object")
 
       //Converting received file to blob format
         const blob = new Blob([pdf.data], { type: 'application/pdf' });
+
+        console.log("blob file",blob)
         setPdffile(blob);
 
             }
             catch(error) {
-              toast.error("Error",error.response?.data?.message)
+              toast.error(`Error: ${error.response.data.message}`)
               console.log("Error1",error)
             }
     }
@@ -79,10 +78,13 @@ function addPageno(e) {
   makepagestring(""+e.target.id);
   if(e.target.classList.contains('green'))
   {
-    e.target.classList.remove('green')
+    e.target.classList.remove('green');
+    e.target.parentElement.classList.remove("green");
   }
   else {
     e.target.classList.add("green")
+    console.log(e.target.parentElement,"parent");
+    e.target.parentElement.classList.add("green");
   }
 }
 
@@ -93,14 +95,14 @@ const makepagestring = (pageno)=>{
     let tempstr1 = pagenostring.replace(pageno+",","");
     setPagenostring(tempstr1);
     pagesstringref.current=tempstr1
-    console.log("remove",pagenostring);
+    console.log("remove",pagesstringref.current);
 
   }
   else {
     let tempstr2 = pagenostring+pageno+","
     setPagenostring(tempstr2);
     pagesstringref.current = tempstr2;
-    console.log("add",pagenostring)
+    console.log("add",pagesstringref.current)
   }
 }
 
@@ -120,15 +122,15 @@ async function exportpdf() {
 
     console.log("new string",pagesstringref.current)
 
-  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{ "token-pdfeditor":`Bearer ${localStorage.getItem('token')}`}})
+  let exportpdf = await axios.post(`${process.env.REACT_APP_URL}/actions/exportpdf`,bodyObj,{headers:{ "token-pdfeditor":`Bearer ${localStorage.getItem('token')}`},responseType:"arraybuffer"})
 
   console.log(exportpdf)
 
   let data1 = exportpdf.data;
 
-  const arrayBuffer1 = data1.arrayBuffer();
+  // const arrayBuffer1 = data1.arrayBuffer();
 
-  const blob = new Blob([arrayBuffer1], { type: 'application/pdf' });
+  const blob = new Blob([data1], { type: 'application/pdf' });
 
   const url = window.URL.createObjectURL(blob);
 
@@ -136,7 +138,7 @@ async function exportpdf() {
   atag.href=url;
   atag.setAttribute(
     'download',
-    `pdfeditordoc.pdf`,
+    `${"edited"+localStorage.getItem('currPdf')}`,
   );
   document.body.appendChild(atag);
   atag.click();
@@ -167,6 +169,7 @@ async function exportpdf() {
   <span className="visually-hidden">Loading...</span>
 </div></div>:"Export & Download PDF"}</button>
      </div>
+<p style={{textAlign:"center"}}>Filename : {localStorage.getItem('currPdf')}</p>
       <Document
         file={pdffile}
         onLoadSuccess={onDocumentLoadSuccess}
@@ -184,7 +187,7 @@ async function exportpdf() {
               height={400}
               renderAnnotationLayer={true}
             />
-            <button type="button" className="btn active" aria-pressed="true" style={{textAlign:"center","width":"100%","backgroundColor":"grey"}} onClick={addPageno} id={index}>{index+1}</button>
+            <button type="button" className="btn active" aria-pressed="true" style={{textAlign:"center","width":"100%","backgroundColor":"grey"}} onClick={addPageno} id={index}>Click Here To Select {index+1}</button>
             </div>
           ),
         )}

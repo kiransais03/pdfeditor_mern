@@ -11,5 +11,6 @@
 }
 
 .green {
-  background-color: blueviolet !important;
+  background-color: blue !important;
+  border: 3px solid blue;
 }

@@ -145,6 +145,7 @@ const userlogin = async (req,res)=>{
    const payload = {
     name : userData.data.name,
     email : userData.data.email,
+    pdflocation : userData.data.pdflocation,
    }
 
    //Creating jwt token to authrize the user as LoggedIn
@@ -152,12 +153,13 @@ const userlogin = async (req,res)=>{
 
    res.status(200).send({
     status : 200,
-    message : "User Loging Successfull",
+    message : "User Login Successfull",
     data : {
         token : token,
+        pdflocation : userData.data.pdflocation,
+        email : userData.data.email,
     }
    })
-
 }
 
 

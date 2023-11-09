@@ -11,7 +11,7 @@ const path = require('path');
 //Defining filename and location to store it on the server
 const storage = multer.diskStorage({   
     destination:(req,file,cb)=>{
-        cb(null,'./pdfstorage');
+        cb(null,'./routes/pdfstorage');
     },
     filename:(req,file,cb)=>{
         cb(null,Date.now()+"_"+file.originalname);
@@ -27,7 +27,7 @@ app.post('/uploadpdf',isAuth,upload.single('pdffile'),async (req,res)=>{
        {
          throw new Error("The file is not uploaded,Please try again");
        }
-     const isaddedPdflocation = await addPdflocation("./pdfstorage/"+req.file.filename,req.locals.email);
+     const isaddedPdflocation = await addPdflocation("./routes/pdfstorage/"+req.file.filename,req.locals.email);
      
        res.status(201).send({
         status : 201,
@@ -49,29 +49,16 @@ app.get('/getpdf',isAuth,async (req,res)=>{
 
     try {
 
+        console.log("Hi this is before getting pdf")
+
     const pdflocation = await getPdflocation(req.locals.email);
     // const pdfFile = fs.readFileSync(pdflocation);
 
     console.log(pdflocation,"this is pdf location")
-    res.set('Content-Type','application/pdf');
 
-    //Note : create 'temppdfstorage' folder in the parent folder of current code file(here docactions.js) that is inside 'routes' folder
-    let temppath = path.resolve(__dirname,'temppdfstorage','tempdoc.pdf')   //written to convert the 'Relative' path to 'Absolute path'
+    res.download(pdflocation);
 
-   fs.copyFileSync(pdflocation,temppath)
-
-    res.status(200).sendFile(temppath,(error)=>{
-        fs.unlinkSync(temppath);
-
-        if(error) 
-        {
-            res.status(400).status({
-                status : 400,
-                message : "Failed to get the pdf file",
-            })
-        }
-    })
-}
+    }
 catch(error) {
     res.status(400).send({
         status : 400,
@@ -114,25 +101,7 @@ app.post('/exportpdf',isAuth,async (req,res)=>{
 
   fs.writeFileSync("./routes/temppdfstorage/newPdffile.pdf",newPdfexportfile,);
 
-    res.set("Content-Type","application/pdf");
-
-    //Note : create 'temppdfstorage' folder in the parent folder of current code file(here docactions.js) that is inside 'routes' folder
-    let temppath =await path.resolve(__dirname,'temppdfstorage','tempdoc.pdf')   //written to convert the 'Relative' path to 'Absolute path'
-
-    fs.copyFileSync('./routes/temppdfstorage/newPdffile.pdf',temppath);
-
-    res.status(200).sendFile(temppath,(error)=>{
-
-        fs.unlinkSync(temppath);
-
-        if(error)
-        {
-            res.status(404).send({
-                status : 404,
-                message : "File exportfailed.Please try again",
-            })
-        }
-    })
+  res.download('./routes/temppdfstorage/newPdffile.pdf')
 
 }
 catch(error) {

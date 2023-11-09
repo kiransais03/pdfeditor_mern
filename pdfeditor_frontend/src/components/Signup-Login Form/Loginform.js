@@ -26,6 +26,14 @@ const Loginform =()=>{
           
               console.log(loginUserdata.data.data.token);
               localStorage.setItem('token',loginUserdata.data.data.token);
+              if(loginUserdata.data.data.pdflocation !== "nofile")
+              {
+                let filenamearr = loginUserdata.data.data.pdflocation.split('/');
+                 console.log(filenamearr,"array")
+                let filename = filenamearr[filenamearr.length-1];
+                localStorage.setItem('currPdf',filename);
+              }
+              localStorage.setItem('email',loginUserdata.data.data.email);
               setLoading(false);
               toast.success('Login Successful');
               console.log("Login Successfull.")

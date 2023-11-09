@@ -51,6 +51,7 @@ function ResponsiveAppBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+  
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -161,6 +162,7 @@ function ResponsiveAppBar() {
             ))}
           </Box>
 
+          <span>User : {localStorage.getItem('email')} </span>
           <Box style={hide?{display:"none",flexGrow: "0"}:{display:"block",flexGrow: "0"}}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
