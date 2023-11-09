@@ -68,7 +68,8 @@ function ResponsiveAppBar() {
 
   const logout = ()=>{
     localStorage.removeItem('token');
-    localStorage.removeItem('currPdf')
+    localStorage.removeItem('currPdf');
+    localStorage.removeItem('email');
     setRerender("1")
     navigate('login');
   }
